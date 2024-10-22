@@ -11,6 +11,9 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
 from google.colab import drive
+import nltk
+nltk.download('wordnet')
+from nltk.corpus import wordnet
 
 # Mount Google Drive
 drive.mount('/content/drive', force_remount=True)
@@ -51,6 +54,23 @@ def augment_audio(y, sr):
     y_noisy = y + noise_factor * noise
     return [y_stretched, y_shifted, y_noisy]
 
+# Synonym replacement for text augmentation
+def synonym_replacement(text):
+    words = text.split()
+    new_words = words.copy()
+    random_word_list = list(set([word for word in words if wordnet.synsets(word)]))
+    if random_word_list:
+        word_to_replace = random.choice(random_word_list)
+        synonyms = wordnet.synsets(word_to_replace)
+        if synonyms:
+            synonym = synonyms[0].lemmas()[0].name()
+            new_words = [synonym if word == word_to_replace else word for word in words]
+    return ' '.join(new_words)
+
+# Text data augmentation
+def augment_text(text):
+    augmented_texts = [text, synonym_replacement(text)]
+    return augmented_texts
 
 # Extraction of audio features using MFCC
 def extract_features(audio_file, start_time, duration=MAX_AUDIO_DURATION, sr=SAMPLE_RATE):
@@ -115,8 +135,16 @@ def prepare_data(base_path):
             audio_path = os.path.join(base_path, session, 'dialog', 'wav', audio_file)
             y_audio, sr = librosa.load(audio_path, sr=SAMPLE_RATE, offset=batch_labels['start_time'].iloc[0], duration=MAX_AUDIO_DURATION)
             features = extract_features(audio_path, batch_labels['start_time'].iloc[0])
-            X_audio.append(features.T)
-            X_text.append(batch_labels['emotion'].iloc[0])
+            text_file = audio_file.replace('.wav', '.txt')
+            text_path = os.path.join(base_path, session, 'dialog', 'transcriptions', text_file)
+            text = ""
+            if os.path.exists(text_path):
+                with open(text_path, 'r') as f:
+                    text = f.read().strip()
+                    augmented_texts= augment_text(text)
+                    for augmented_text in augmented_texts:
+                        X_text.append(augmented_texts)
+                    X_audio.append(features.T)
             y.append(batch_labels['emotion'].iloc[0])
         except Exception as e:
             print(f"Error processing {audio_file}: {e}")
