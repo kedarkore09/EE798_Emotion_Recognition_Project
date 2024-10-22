@@ -119,9 +119,10 @@ def load_emotion_labels(session, audio_files):
     return pd.DataFrame(labels)
 
 # Prepare data
+# Prepare the dataset with dynamic audio augmentation
 def prepare_data(base_path):
     audio_files = get_audio_files(base_path)
-    label_encoder = LabelEncoder()
+    label_encoder = LabelEncoder()  
     label_encoder.fit(EMOTIONS)
 
     tokenizer = Tokenizer()
@@ -132,32 +133,68 @@ def prepare_data(base_path):
             batch_labels = load_emotion_labels(session, [audio_file])
             if batch_labels.empty:
                 continue
+
+            # Get audio features and augment the data
             audio_path = os.path.join(base_path, session, 'dialog', 'wav', audio_file)
+            if not os.path.exists(audio_path):
+                print(f"Audio file not found: {audio_path}")
+                continue
             y_audio, sr = librosa.load(audio_path, sr=SAMPLE_RATE, offset=batch_labels['start_time'].iloc[0], duration=MAX_AUDIO_DURATION)
-            features = extract_features(audio_path, batch_labels['start_time'].iloc[0])
+            augmented_audios = augment_audio(y_audio, sr)
+
+            # Extract features for the original and augmented audio samples
+            for augmented_audio in [y_audio] + augmented_audios:
+                features = extract_features(audio_path, batch_labels['start_time'].iloc[0])
+                X_audio.append(features.T)
+                X_text.append(batch_labels['emotion'].iloc[0])  # Append text and emotion for original and augmented audio
+                y.append(batch_labels['emotion'].iloc[0])
+
+            # Augment text
             text_file = audio_file.replace('.wav', '.txt')
             text_path = os.path.join(base_path, session, 'dialog', 'transcriptions', text_file)
             text = ""
             if os.path.exists(text_path):
                 with open(text_path, 'r') as f:
                     text = f.read().strip()
-                    augmented_texts= augment_text(text)
+                    augmented_texts = augment_text(text)
                     for augmented_text in augmented_texts:
-                        X_text.append(augmented_texts)
-                    X_audio.append(features.T)
-            y.append(batch_labels['emotion'].iloc[0])
+                        X_text.append(augmented_text)
+                        X_audio.append(features.T)  
+                        y.append(batch_labels['emotion'].iloc[0])
+
         except Exception as e:
             print(f"Error processing {audio_file}: {e}")
 
+    # Convert audio data to numpy arrays
     X_audio = np.array(X_audio, dtype=np.float32)
+
+    # Generate additional augmentations to match X_text length
+    while len(X_audio) < len(X_text):
+        # Randomly select an existing audio sample to augment
+        random_index = random.randint(0, len(X_audio) - 1)
+        y_audio_sample = X_audio[random_index]
+        augmented_audios = augment_audio(y_audio_sample, SAMPLE_RATE)
+
+        for augmented_audio in augmented_audios:
+            features = extract_features(augmented_audio, start_time=0)  # Extract features for augmented samples
+            X_audio = np.append(X_audio, [features], axis=0)  # Append the new features
+
+            # Append corresponding text and label to ensure alignment
+            X_text.append(X_text[random_index])
+            y.append(y[random_index])
+
+    # Tokenize and pad text sequences
     tokenizer.fit_on_texts(X_text)
     X_text = tokenizer.texts_to_sequences(X_text)
     X_text = pad_sequences(X_text, maxlen=MAX_TEXT_LENGTH)
 
+    # One-hot encode labels
     y_encoded = label_encoder.transform(y)
     y = to_categorical(y_encoded, num_classes=len(EMOTIONS))
 
     return X_audio, X_text, y, tokenizer, label_encoder
+
+
 
 def tdnn_layer(inputs, num_units, context_size, dilation=1):
     return layers.Conv1D(num_units, kernel_size=context_size, dilation_rate=dilation, activation='relu')(inputs)
