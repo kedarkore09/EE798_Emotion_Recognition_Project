@@ -23,7 +23,7 @@ To install the necessary dependencies, run:
 -   **analysis.py**: code for plots, classification report and confusion
     matrix
 
--   **PDF.pdf**: readme file, Project details.
+-   **README.md**: readme file, Project details.
 
 -   **PDF.pdf**: Project results, and dataset description.
 
