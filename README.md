@@ -25,7 +25,7 @@ To install the necessary dependencies, run:
 
 -   **README.md**: readme file, Project details.
 
--   **PDF.pdf**: Project results, and dataset description.
+-   **EE798_implementation_PDF.pdf**: Project results, and dataset description.
 
 # How to Run
 
