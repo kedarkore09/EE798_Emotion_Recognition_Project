@@ -2,12 +2,14 @@ import os
 import numpy as np
 import random
 import librosa
+import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.utils import class_weight
 import tensorflow as tf
 from tensorflow.keras import layers, models, callbacks, optimizers, regularizers
-from tensorflow.keras.preprocessing.text import Tokenizer, pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
 from google.colab import drive
 import nltk
