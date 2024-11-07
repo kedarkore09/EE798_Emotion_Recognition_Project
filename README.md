@@ -1,9 +1,4 @@
-> README: Eficient Speech Emotion Recognition Using Multi-Scale CNN and
-> Attention
->
-> Kedar Kore Roll No.- 210503
-
-1\. Project Overview
+# 1. Project Overview {#project-overview .unnumbered}
 
 This repository implements a multi-modal emotion recognition system
 using audio and text data from the IEMOCAP dataset. The model leverages
@@ -13,97 +8,95 @@ embeddings for text representation.
 
 The repository is organized into two phases:
 
-> • Phase 1: Initial implementation of the emotion recognition model.
->
-> • Phase 2: Enhanced implementation with Monte Carlo Dropout for
-> uncertainty estimation.
+-   **Phase 1:** Initial implementation of the emotion recognition
+    model.
 
-2\. Dependencies
+-   **Phase 2:** Enhanced implementation with Monte Carlo Dropout for
+    uncertainty estimation.
+
+# 2. Dependencies {#dependencies .unnumbered}
 
 To install the necessary dependencies, run:
 
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
-3\. Repository Structure
+# 3. Repository Structure {#repository-structure .unnumbered}
 
-Common Files:
+**Common Files:**
 
-> • requirements.txt: List of dependencies.
->
-> • README.md: Readme file, Project details.
+-   `requirements.txt`: List of dependencies.
 
-Phase 1 Files:
+-   `README.md`: Readme file, Project details.
 
-> • train.py: Training script for the initial model.
->
-> • test.py: Testing and evaluation script for the initial model.
->
-> • analysis.py: Code for generating plots, classification reports, and
-> confusion matrices.
->
-> • EE798 implementation PDF.pdf: Phase 1 project report, results, and
-> dataset description.
+**Phase 1 Files:**
 
-Phase 2 Files:
+-   `train.py`: Training script for the initial model.
 
-> • train part2.py: Training script for the enhanced model with Monte
-> Carlo Dropout.
->
-> • test part2.py: Testing the model with Monte Carlo Dropout.
->
-> • evaluation part2.py: Code for generating Phase 2 evaluation metrics
-> and plots.
->
-> • EE798 projectsub2 pdf.pdf: Phase 2 project report, results, and
-> dataset description.
->
-> 1
+-   `test.py`: Testing and evaluation script for the initial model.
 
-4\. How to Run
+-   `analysis.py`: Code for generating plots, classification reports,
+    and confusion matrices.
 
-Phase 1:
+-   `EE798_implementation_PDF.pdf`: Phase 1 project report, results, and
+    dataset description.
 
-> 1\. Training the model:
->
-> python train.py
->
-> 2\. Testing:
->
-> python test.py
->
-> 3\. Evaluation:
->
-> python analysis.py
+**Phase 2 Files:**
 
-Phase 2:
+-   `train_part2.py`: Training script for the enhanced model with Monte
+    Carlo Dropout.
 
-> 1\. Training the enhanced model with Monte Carlo Dropout:
->
-> python train_part2.py
->
-> 2\. Testing:
->
-> python test_part2.py
->
-> 3\. Evaluation:
->
-> python evaluation_part2.py
+-   `test_part2.py`: Testing the model with Monte Carlo Dropout.
 
-5\. Results
+-   `evaluation_part2.py`: Code for generating Phase 2 evaluation
+    metrics and plots.
 
-Phase 1 Results: After running the Phase 1 scripts, you can visualize:
+-   `EE798_projectsub2_pdf.pdf`: Phase 2 project report, results, and
+    dataset description.
 
-> • accuracy table.
->
-> • Confusion matrix for the initial implementation.
+# 4. How to Run {#how-to-run .unnumbered}
 
-Phase 2 Results: With Monte Carlo Dropout, the Phase 2 implementation
-provides:
+**Phase 1:**
 
-> • Enhanced uncertainty estimation.
->
-> • Updated evaluation metrics.
->
-> • confusion matrix visualizations.
->
-> 2
+1.  **Training the model:**
+
+            python train.py
+
+2.  **Testing:**
+
+            python test.py
+
+3.  **Evaluation:**
+
+            python analysis.py
+
+**Phase 2:**
+
+1.  **Training the enhanced model with Monte Carlo Dropout:**
+
+            python train_part2.py
+
+2.  **Testing:**
+
+            python test_part2.py
+
+3.  **Evaluation:**
+
+            python evaluation_part2.py
+
+# 5. Results {#results .unnumbered}
+
+**Phase 1 Results:** After running the Phase 1 scripts, you can
+visualize:
+
+-   accuracy table.
+
+-   Confusion matrix for the initial implementation.
+
+**Phase 2 Results:** With Monte Carlo Dropout, the Phase 2
+implementation provides:
+
+-   Enhanced uncertainty estimation.
+
+-   Updated evaluation metrics.
+
+-   confusion matrix visualizations.
