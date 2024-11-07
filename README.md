@@ -1,4 +1,4 @@
-# 1. Project Overview {#project-overview .unnumbered}
+# 1. Project Overview 
 
 This repository implements a multi-modal emotion recognition system
 using audio and text data from the IEMOCAP dataset. The model leverages
@@ -14,13 +14,13 @@ The repository is organized into two phases:
 -   **Phase 2:** Enhanced implementation with Monte Carlo Dropout for
     uncertainty estimation.
 
-# 2. Dependencies {#dependencies .unnumbered}
+# 2. Dependencies 
 
 To install the necessary dependencies, run:
 
     pip install -r requirements.txt
 
-# 3. Repository Structure {#repository-structure .unnumbered}
+# 3. Repository Structure 
 
 **Common Files:**
 
@@ -53,7 +53,7 @@ To install the necessary dependencies, run:
 -   `EE798_projectsub2_pdf.pdf`: Phase 2 project report, results, and
     dataset description.
 
-# 4. How to Run {#how-to-run .unnumbered}
+# 4. How to Run 
 
 **Phase 1:**
 
@@ -83,7 +83,7 @@ To install the necessary dependencies, run:
 
             python evaluation_part2.py
 
-# 5. Results {#results .unnumbered}
+# 5. Results 
 
 **Phase 1 Results:** After running the Phase 1 scripts, you can
 visualize:
